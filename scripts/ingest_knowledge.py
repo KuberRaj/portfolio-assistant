@@ -254,7 +254,7 @@ def generate_embedding(
 
 def build_index(
     dry_run: bool = False,
-) -> dict[str, Any\]:
+) -> dict[str, Any]:
     # load_environment()
 
     chunks = load_document_chunks()
