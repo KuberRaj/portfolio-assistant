@@ -5,7 +5,7 @@ from .rag_service import search_portfolio
 
 root_agent = Agent(
     name="portfolio_assistant",
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     description=(
         "A retrieval-augmented portfolio assistant that answers "
         "questions about Kunal's published professional background."
