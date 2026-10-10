@@ -1,0 +1,6 @@
+[
+  {"question":"What experience does Kunal have with Google ADK?","expected_sources":["experience.md"]},
+  {"question":"Tell me about the ADF to GCP migration work.","expected_sources":["projects.md","experience.md"]},
+  {"question":"Which Google Cloud services has Kunal used?","expected_sources":["profile.md","experience.md"]},
+  {"question":"How does Kunal integrate agents with React?","expected_sources":["experience.md","projects.md"]}
+]
