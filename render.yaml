@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: portfolio-agent-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /list-apps
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: PORT
+        value: 8000
