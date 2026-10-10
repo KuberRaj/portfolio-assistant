@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 from google.genai import types
-
+import argparse
 from dotenv import load_dotenv
 from google import genai
 
@@ -252,14 +252,31 @@ def generate_embedding(
     return embedding
 
 
-def build_index() -> None:
+def build_index(
+    dry_run: bool = False,
+) -> dict[str, Any\]:
     # load_environment()
+
+    chunks = load_document_chunks()
+
+    if dry_run:
+        return {
+            "status": "dry_run",
+            "chunk_count": len(chunks),
+            "chunks": [
+                {
+                    "source": chunk["source"],
+                    "title": chunk["title"],
+                    "chunk_index": chunk["chunk_index"],
+                    "characters": len(chunk["content"]),
+                }
+                for chunk in chunks
+            ],
+        }
 
     client = genai.Client(
         api_key=os.environ["GOOGLE_API_KEY"],
     )
-
-    chunks = load_document_chunks()
 
     VECTOR_STORE_DIRECTORY.mkdir(
         parents=True,
@@ -325,14 +342,62 @@ def build_index() -> None:
     print()
     print(f"Successfully indexed {len(indexed_chunks)} chunks.")
     print(f"Index written to: {INDEX_FILE}")
+    return index_payload
 
 
-if __name__ == "__main__":
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Generate the portfolio RAG vector index.",
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help=(
+            "Validate knowledge files and chunking without "
+            "calling the embedding API."
+        ),
+    )
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    arguments = parse_arguments()
+
     try:
-        build_index()
+        result = build_index(
+            dry_run=arguments.dry_run,
+        )
+
+        if arguments.dry_run:
+            print(
+                json.dumps(
+                    result,
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+        else:
+            print()
+            print(
+                f"Successfully generated "
+                f"{result['chunk_count']} knowledge chunks."
+            )
+            print(
+                f"Index written to: {INDEX_FILE}"
+            )
+
+        return 0
+
     except Exception as error:
         print(
             f"Knowledge ingestion failed: {error}",
             file=sys.stderr,
         )
-        raise
+
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
