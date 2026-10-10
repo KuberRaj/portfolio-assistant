@@ -14,7 +14,7 @@ from google import genai
 
 BACKEND_DIRECTORY = Path(__file__).resolve().parents[1]
 
-AGENT_DIRECTORY = BACKEND_DIRECTORY
+AGENT_DIRECTORY = BACKEND_DIRECTORY / "portfolio_agent"
 KNOWLEDGE_DIRECTORY = AGENT_DIRECTORY / "knowledge"
 VECTOR_STORE_DIRECTORY = AGENT_DIRECTORY / "vector_store"
 INDEX_FILE = VECTOR_STORE_DIRECTORY / "portfolio_index.json"
