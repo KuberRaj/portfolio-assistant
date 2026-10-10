@@ -14,4 +14,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "adk api_server --host 0.0.0.0 --port ${PORT:-8000} --allow_origins=${ALLOWED_ORIGINS} ."]
+CMD ["sh", "-c", "adk api_server . --host 0.0.0.0 --port ${PORT:-8000} --allow_origins=${ALLOWED_ORIGINS} ."]
